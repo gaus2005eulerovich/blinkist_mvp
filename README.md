@@ -1,4 +1,4 @@
-@"
+
 # 📚 Blinkist Clone MVP
 
 An audio-summary mobile application built with **Flutter** and **FastAPI**.
