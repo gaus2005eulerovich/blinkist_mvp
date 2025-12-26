@@ -31,3 +31,20 @@ python -m venv venv
 
 pip install fastapi uvicorn pydantic
 python main.py
+```
+
+### 2. Run the Mobile App
+
+Ensure you have Flutter SDK installed and an Android Emulator (or iOS Simulator) running.
+
+```bash
+
+cd blinkist_mobile
+flutter pub get
+flutter run
+```
+
+## 🌐 Networking & Connection
+
+* **Emulator:** The app is pre-configured to use http://10.0.2.2:8000 to reach the local server.
+* **Physical Device:** If you run the app on a real phone, ensure both devices are on the same network and update the backendUrl in lib/main.dart to your computer's local IP.
