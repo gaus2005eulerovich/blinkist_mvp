@@ -8,7 +8,7 @@ import 'package:audioplayers/audioplayers.dart';
 // При запуске на реальном устройстве, нужно будет:
 // 1. Поменять этот IP на свой локальный (например, 192.168.1.X)
 // 2. ИЛИ использовать 'adb reverse tcp:8000 tcp:8000' и адрес '127.0.0.1'
-const String backendUrl = 'http://10.0.2.2:8000'; 
+const String backendUrl = 'http://10.0.2.2:8000';
 
 void main() {
   runApp(const BlinkistClone());
