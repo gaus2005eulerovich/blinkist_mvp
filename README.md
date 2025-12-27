@@ -2,7 +2,6 @@
 # 📚 Blinkist Clone MVP
 
 An audio-summary mobile application built with **Flutter** and **FastAPI**.
-Developed as a test assignment for the Fullstack Developer position at Chatty English.
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?style=flat&logo=flutter)
 ![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat&logo=fastapi)
