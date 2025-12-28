@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; // Нужен для Slider и Material
+import 'package:flutter/material.dart';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart'; // Новый пакет
 import '../utils/theme.dart';
 
 class AudioControls extends StatelessWidget {
@@ -7,9 +8,9 @@ class AudioControls extends StatelessWidget {
   final Duration position;
   final Duration duration;
   final VoidCallback onPlayPause;
-  final Function(double) onSeek;
-  final Function(double) onSeekStart;
-  final Function(double) onSeekEnd;
+  final Function(double) onSeek;      // Для обновления UI
+  final Function(double) onSeekStart; // Начали тянуть
+  final Function(double) onSeekEnd;   // Закончили (отпустили)
 
   const AudioControls({
     super.key,
@@ -22,60 +23,45 @@ class AudioControls extends StatelessWidget {
     required this.onSeekEnd,
   });
 
-  String _formatTime(Duration d) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(d.inMinutes.remainder(60));
-    final seconds = twoDigits(d.inSeconds.remainder(60));
-    return "$minutes:$seconds";
-  }
-
   @override
   Widget build(BuildContext context) {
-    final double maxDuration = duration.inSeconds.toDouble();
-    final double currentValue = position.inSeconds.toDouble().clamp(0.0, maxDuration > 0 ? maxDuration : 1.0);
-    final double safeMax = maxDuration > 0 ? maxDuration : 1.0;
-
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
-          // --- ИСПРАВЛЕНИЕ ЗДЕСЬ ---
-          // Оборачиваем SliderTheme в Material виджет
-          // type: MaterialType.transparency делает его невидимым, не ломая дизайн
-          child: Material(
-            type: MaterialType.transparency, 
-            child: SliderTheme(
-              data: SliderTheme.of(context).copyWith(
-                activeTrackColor: AppTheme.primaryGreen,
-                inactiveTrackColor: CupertinoColors.systemGrey5,
-                thumbColor: AppTheme.primaryGreen,
-                trackHeight: 4.0,
-                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8.0),
-                overlayShape: const RoundSliderOverlayShape(overlayRadius: 16.0),
-              ),
-              child: Slider(
-                value: currentValue,
-                min: 0.0,
-                max: safeMax,
-                onChanged: onSeek,
-                onChangeStart: onSeekStart,
-                onChangeEnd: onSeekEnd,
-              ),
-            ),
-          ),
-        ),
+        // Профессиональный прогресс-бар
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(_formatTime(position), style: const TextStyle(color: AppTheme.textGrey, fontSize: 12)),
-              Text(_formatTime(duration), style: const TextStyle(color: AppTheme.textGrey, fontSize: 12)),
-            ],
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: ProgressBar(
+            progress: position,
+            total: duration,
+            
+            // Цвета
+            baseBarColor: CupertinoColors.systemGrey5,
+            progressBarColor: AppTheme.primaryGreen,
+            thumbColor: AppTheme.primaryGreen,
+            bufferedBarColor: Colors.transparent,
+            
+            // Настройка поведения
+            timeLabelLocation: TimeLabelLocation.sides, // Время по бокам
+            timeLabelTextStyle: const TextStyle(color: AppTheme.textGrey, fontSize: 12),
+            thumbRadius: 8.0,
+            
+            // Обработчики событий
+            onSeek: (duration) {
+              // Это срабатывает при ТАПЕ и при окончании перетаскивания
+              onSeekEnd(duration.inSeconds.toDouble());
+            },
+            onDragStart: (details) {
+              onSeekStart(position.inSeconds.toDouble());
+            },
+            onDragUpdate: (details) {
+              // Пока тянем - обновляем визуально
+              onSeek(details.timeStamp.inSeconds.toDouble());
+            },
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         
+        // Кнопка Play
         CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: onPlayPause,
@@ -89,5 +75,6 @@ class AudioControls extends StatelessWidget {
     );
   }
 }
+
 
 

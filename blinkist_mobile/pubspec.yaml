@@ -36,7 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.6.0
   audioplayers: ^6.5.1
+  audio_video_progress_bar: ^2.0.0
 
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

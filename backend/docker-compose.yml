@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # --- СЕРВИС 1: Твой Бэкенд ---
+  server:
+    build: .  # Строим из Dockerfile в текущей папке
+    ports:
+      - "8000:8000" # Пробрасываем порт: 8000 на ноуте -> 8000 в контейнере
+    depends_on:
+      - mongo # Ждем, пока запустится база
+    environment:
+      # ВАЖНО: 'mongo' здесь — это имя сервиса ниже. 
+      # Docker создает свою внутреннюю сеть, где 'mongo' работает как DNS-имя.
+      - MONGO_URL=mongodb://mongo:27017/blinkist_clone
+
+  # --- СЕРВИС 2: База Данных ---
+  mongo:
+    image: mongo:latest # Качаем готовый образ MongoDB от разработчиков
+    ports:
+      - "27017:27017" # Чтобы ты мог подключиться к базе через Compass (GUI)
+    volumes:
+      # СОХРАНЕНИЕ ДАННЫХ
+      # Мы мапим папку /data/db внутри контейнера на том 'mongodb_data'.
+      # Если ты удалишь контейнер, данные останутся в этом томе.
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data: 
+
