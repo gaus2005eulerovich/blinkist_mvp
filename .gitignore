@@ -83,4 +83,6 @@ Thumbs.db
 **/env/
 **/.env
 
-
+# --- AI context ---
+project_context.txt
+pack_project.py

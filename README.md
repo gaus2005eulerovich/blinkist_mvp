@@ -1,4 +1,3 @@
-@"
 # 📚 Blinkist Clone MVP
 
 An audio-summary mobile application built with **Flutter** and **FastAPI**.
@@ -9,7 +8,7 @@ Developed as a test assignment for the Fullstack Developer position at Chatty En
 
 ## 🎥 Demo Video
 
-> **[▶️ Click here to watch the Demo Video (images/demo.mp4)](images/demo.mp4)**
+> **[▶️ Click here to watch the Demo Video (images/demo.mp4)](images/demo_video.mp4)**
 
 *Note: Since the backend is local, this video demonstrates the functionality on a physical Samsung device.*
 
